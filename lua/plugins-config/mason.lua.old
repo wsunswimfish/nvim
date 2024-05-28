@@ -1,0 +1,57 @@
+--LSP插件管理器
+
+return {
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+    "neovim/nvim-lspconfig",
+    --    "williamboman/nvim-lsp-installer",
+
+    config = function()
+
+        require("mason1").setup({
+            ui = {
+                icons = {
+                    package_installed = "✓",
+                    package_pending = "➜",
+                    package_uninstalled = "✗",
+                },
+            },
+        })
+
+        require("mason-lspconfig").setup({
+            -- 确保安装，根据需要填写
+            ensure_installed = {
+                "jedi_language_server", --jedi-language-server
+                "lua_ls",               --lua-language-server
+                -- "pyre",                 --pyre
+                "pylsp",                --python-lsp-server
+                -- "sourcery",             --sourcery
+                -- "ruff_lsp",             --ruff-lsp
+                "jsonls",
+                "html",
+                "cssls",
+                "pyright",
+            },
+        })
+
+        vim.api.nvim_create_autocmd(LspAttach,{
+            callback = function(args)
+                local buf = args.buf
+                vim.api.nvim_buf_set_keymap(buf,"n","C-M-l","<cmd>lua vim.lsp.buf.format()<CR>",{noremap = true})
+            end,
+        })
+        require'lspconfig'.pyright.setup{}
+        require("lspconfig").lua_ls.setup {capabilities = capabilities, on_attach = on_attach,}
+        require("lspconfig").pylsp.setup {capabilities = capabilities, on_attach = on_attach,} 
+        require("lspconfig").intelephense.setup {}
+
+        --			require("nvim-lsp-installer").setup()
+        --configure python server
+        --			require("lspconfig").python_language_server.setup {
+        --				capabilities = capabilities,
+        --				on_attach = on_attach,
+        --			}
+
+    end,
+
+}
