@@ -23,4 +23,3 @@ vim.opt.rtp:prepend(lazypath)
 
 --引入plugins-config目录的插件,各插件的配置文件以return的方式接受lazy管理。
 require("lazy").setup { { import = "plugins-config" } }
-
